@@ -7,22 +7,22 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="apple-touch-icon" sizes="57x57" href="/images/Fa/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/images/Fa/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/images/Fa/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/images/Fa/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/images/Fa/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/images/Fa/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/images/Fa/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/images/Fa/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/Fa/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/images/Fa/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/Fa/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/images/Fa/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/Fa/favicon-16x16.png">
-    <link rel="manifest" href="/images/Fa/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./images/logo/myremote-logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/logo/myremote-logo.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="./images/logo/myremote-logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/logo/myremote-logo.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./images/logo/myremote-logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/logo/myremote-logo.png">
+    <link rel="manifest" href="./images/logo/myremote-logo.png">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/images/Fa/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="./images/logo/myremote-logo.png">
     <meta name="theme-color" content="#ffffff">
     <title>Login</title>
     <link href="/../panel/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@
 				<div class="panel panel-info" style="min-height: 300px;">
 					<div class="panel-heading"><h3 class="panel-title">Login</h3></div>
 					   <div class="panel-body">
-							<form id="login" action="login.php" method="POST" autocomplete="off"class="form-outline" role="form">
+							<form id="login" action="login.php" method="POST" autocomplete="off" class="form-outline" role="form">
 								<label for="username">Username:</label>
 								<input class="form-control" name="username" type="Text" placeholder="Username" autocomplete="off" autofocus value="<?php if (isset($_POST["username"])) { echo $_POST["username"];}?>">
 								<br>
@@ -59,6 +59,7 @@
 								</div>
 								</div>
 							</form>
+							<img src="./images/logo/myremote-logo.png" class="img-responsive mrlogo"/>
 						</div>
 				</div>
 
@@ -68,7 +69,6 @@
 				if($_SESSION['user'] != ''){
 					header("Location:./index.php");
 				}else{
-					//echo "<script>alert('hey');</script>";
 				}
 				if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					error_reporting('E_ALL');
@@ -79,9 +79,8 @@
 
 					if(isset($_POST) && $email!='' && $password!=''){
 					 $email=stripslashes($_POST['username']);
-					 $password=stripslashes($_POST['password']);
+					 $password= $_POST['password'];
 					 $sql=$dbh->prepare("SELECT id,ul,pw,psalt, username, banned FROM users WHERE username='$email'");
-					// $info = mysql_fetch_array($sql);
 					 $sql->execute(array($email));
 					 while($r=$sql->fetch()){
 					  $p=$r['pw'];
@@ -90,7 +89,6 @@
 					  $ul=$r['ul'];
 					  $username=$r['username'];
 					  $ban=$r['banned'];
-						echo '<script>Alert("Wrong");</script>';
 					 }
 
 					 $site_salt="NoH4Ck3RH3R310101010<3";
@@ -130,7 +128,7 @@
 	            		}
 					 	header('Location:./index.php');
 					  }
-					  elseif($ul == 'user'){ //fake data
+					  elseif($ul == 'user'){
 					 	$username=stripslashes($_POST['username']);
 					 	$location='404';
 						if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -159,7 +157,7 @@
 	            		}
 					  	header('Location:./index.php');
 					  }
-					  elseif($ul == 'unvalidated'){ //fake data
+					  elseif($ul == 'Notvalidated'){
 					 	$username=stripslashes($_POST['username']);
 					 	$location='404';
 						if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -197,13 +195,6 @@
 					}
 				}
 				?>
-				<div class="panel-body col-md-12 mrlogo">
-					<div class="panel panel-info mrlogo">
-						<div class="panel-body mrlogo">
-					 		<img src="./images/logo/myremotelogo.png" class="img-responsive mrlogo col-md-24"/>
-				    	</div>
-		      		</div>
-				</div>
 
 		</div>
 	</div>

@@ -64,136 +64,136 @@
 				</div>
 
 				<?php
-				//details
-				session_start();
-				if($_SESSION['user'] != ''){
-					header("Location:./index.php");
-				}else{
-				}
-				if($_SERVER['REQUEST_METHOD'] == 'POST'){
-					error_reporting('E_ALL');
-					include('../db_con/db_UDB.php');
-					//variabelen
-					$email=stripslashes($_POST['username']);
-					$password=stripslashes($_POST['password']);
-
-					if(isset($_POST) && $email!='' && $password!=''){
-					 $email=stripslashes($_POST['username']);
-					 $password= $_POST['password'];
-					 $sql=$dbh->prepare("SELECT id,ul,pw,psalt, username, banned FROM users WHERE username='$email'");
-					 $sql->execute(array($email));
-					 while($r=$sql->fetch()){
-					  $p=$r['pw'];
-					  $p_salt=$r['psalt'];
-					  $id=$r['id'];
-					  $ul=$r['ul'];
-					  $username=$r['username'];
-					  $ban=$r['banned'];
-					 }
-
-					 $site_salt="NoH4Ck3RH3R310101010<3";
-					 $salted_hash = hash('sha256',$password.$site_salt.$p_salt);
-					 if($p==$salted_hash){
-					  $_SESSION['userlevel'] = $ul;
-					  $_SESSION['username'] = $username;
-					  $_SESSION['user'] = $user;
-					  $_SESSION['id'] = $id;
-					  if ($ban == 0){
-					  if ($ul == 'admin'){
-					 	$username=stripslashes($_POST['username']);
-					 	$location='404';
-						if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-							$IP = $_SERVER['HTTP_CLIENT_IP'];
-						} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        		     		$IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        		    	} else {
-        		        	$IP = $_SERVER['REMOTE_ADDR'];
-        		    	}
-        		    	include_once('../db_con/db_UDB.php');
-        		    	$refdate = date('H:i:s');
-        		    	$login = "INSERT INTO loggedin (ip,username,location,userlevel,time_stamp)
-		            	VALUES ('".$IP."','".$username."','".$location."','".$ul."','".$refdate."')";
-	            		$link->query($login) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-
-	            		include_once('../db_con/db_UDB.php');
-	            		$actual = date("n");
-	            		$sqli1 = "SELECT * FROM m_log WHERE month='$actual'";
-		    			$query3 = mysqli_query($link, $sqli1) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-	            		while($row = mysqli_fetch_assoc($query3)) {
-	            			$value = $row['logins'];
-	            			$login = ++$value;
-	            			echo $login;
-	            			$sqli2 = "UPDATE m_log SET logins='$login' WHERE month='$actual'";
-		            		$link->query($sqli2) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-	            		}
-					 	header('Location:./index.php');
-					  }
-					  elseif($ul == 'user'){
-					 	$username=stripslashes($_POST['username']);
-					 	$location='404';
-						if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-							$IP = $_SERVER['HTTP_CLIENT_IP'];
-						} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        		     		$IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        		    	} else {
-        		        	$IP = $_SERVER['REMOTE_ADDR'];
-        		    	}
-        				include_once('../db_con/db_UDB.php');
-        		    	$refdate = date('H:i:s');
-        		    	$login = "INSERT INTO loggedin (ip,username,location,userlevel,time_stamp)
-		            	VALUES ('".$IP."','".$username."','".$location."','".$ul."','".$refdate."')";
-	            		$link->query($login) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-
-					  	include_once('../db_con/db_UDB.php');
-	            		$actual = date("n");
-	            		$sqli1 = "SELECT * FROM m_log WHERE month='$actual'";
-		    			$query3 = mysqli_query($link, $sqli1) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-	            		while($row = mysqli_fetch_assoc($query3)) {
-	            			$value = $row['logins'];
-	            			$login = ++$value;
-	            			echo $login;
-	            			$sqli2 = "UPDATE m_log SET logins='$login' WHERE month='$actual'";
-		            		$link->query($sqli2) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-	            		}
-					  	header('Location:./index.php');
-					  }
-					  elseif($ul == 'Notvalidated'){
-					 	$username=stripslashes($_POST['username']);
-					 	$location='404';
-						if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-							$IP = $_SERVER['HTTP_CLIENT_IP'];
-						} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        		     		$IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        		    	} else {
-        		        	$IP = $_SERVER['REMOTE_ADDR'];
-        		    	}
-        		    	include_once('../db_con/db_UDB.php');
-        		    	$refdate = date('H:i:s');
-        		    	$login = "INSERT INTO loggedin (ip,username,location,userlevel,time_stamp)
-		            	VALUES ('".$IP."','".$username."','".$location."','".$ul."','".$refdate."')";
-	            		$link->query($login) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-
-					  	include_once('../db_con/db_UDB.php');
-	            		$actual = date("n");
-	            		$sqli1 = "SELECT * FROM m_log WHERE month='$actual'";
-		    			$query3 = mysqli_query($link, $sqli1) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-	            		while($row = mysqli_fetch_assoc($query3)) {
-	            			$value = $row['logins'];
-	            			$login = ++$value;
-	            			echo $login;
-	            			$sqli2 = "UPDATE m_log SET logins='$login' WHERE month='$actual'";
-		            		$link->query($sqli2) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
-	            		}
-					  	header('Location:./index.php');
-					  }
-					  }elseif($ban == 1){
-					  	header('Location:/banned.php');
-					  }
-					 }else{
-					  echo "<div class='alert alert-danger dangeralert'>Wrong username or password.</div>";
-					 }
+					//details
+					session_start();
+					if($_SESSION['user'] != ''){
+						header("Location:./index.php");
+					}else{
 					}
-				}
+					if($_SERVER['REQUEST_METHOD'] == 'POST'){
+						error_reporting('E_ALL');
+						include('../db_con/db_UDB.php');
+						//variabelen
+						$email=stripslashes($_POST['username']);
+						$password=stripslashes($_POST['password']);
+	
+						if(isset($_POST) && $email!='' && $password!=''){
+						 $email=stripslashes($_POST['username']);
+						 $password= $_POST['password'];
+						 $sql=$dbh->prepare("SELECT id,ul,pw,psalt, username, banned FROM users WHERE username='$email'");
+						 $sql->execute(array($email));
+						 while($r=$sql->fetch()){
+						  $p=$r['pw'];
+						  $p_salt=$r['psalt'];
+						  $id=$r['id'];
+						  $ul=$r['ul'];
+						  $username=$r['username'];
+						  $ban=$r['banned'];
+						 }
+	
+						 $site_salt="NoH4Ck3RH3R310101010<3";
+						 $salted_hash = hash('sha256',$password.$site_salt.$p_salt);
+						 if($p==$salted_hash){
+						  $_SESSION['userlevel'] = $ul;
+						  $_SESSION['username'] = $username;
+						  $_SESSION['user'] = $user;
+						  $_SESSION['id'] = $id;
+						  if ($ban == 0){
+						  if ($ul == 'admin'){
+						 	$username=stripslashes($_POST['username']);
+						 	$location='404';
+							if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+								$IP = $_SERVER['HTTP_CLIENT_IP'];
+							} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	        		     		$IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	        		    	} else {
+	        		        	$IP = $_SERVER['REMOTE_ADDR'];
+	        		    	}
+	        		    	include_once('../db_con/db_UDB.php');
+	        		    	$refdate = date('H:i:s');
+	        		    	$login = "INSERT INTO loggedin (ip,username,location,userlevel,time_stamp)
+			            	VALUES ('".$IP."','".$username."','".$location."','".$ul."','".$refdate."')";
+		            		$link->query($login) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+	
+		            		include_once('../db_con/db_UDB.php');
+		            		$actual = date("n");
+		            		$sqli1 = "SELECT * FROM m_log WHERE month='$actual'";
+			    			$query3 = mysqli_query($link, $sqli1) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+		            		while($row = mysqli_fetch_assoc($query3)) {
+		            			$value = $row['logins'];
+		            			$login = ++$value;
+		            			echo $login;
+		            			$sqli2 = "UPDATE m_log SET logins='$login' WHERE month='$actual'";
+			            		$link->query($sqli2) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+		            		}
+						 	header('Location:./index.php');
+						  }
+						  elseif($ul == 'user'){
+						 	$username=stripslashes($_POST['username']);
+						 	$location='404';
+							if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+								$IP = $_SERVER['HTTP_CLIENT_IP'];
+							} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	        		     		$IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	        		    	} else {
+	        		        	$IP = $_SERVER['REMOTE_ADDR'];
+	        		    	}
+	        				include_once('../db_con/db_UDB.php');
+	        		    	$refdate = date('H:i:s');
+	        		    	$login = "INSERT INTO loggedin (ip,username,location,userlevel,time_stamp)
+			            	VALUES ('".$IP."','".$username."','".$location."','".$ul."','".$refdate."')";
+		            		$link->query($login) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+	
+						  	include_once('../db_con/db_UDB.php');
+		            		$actual = date("n");
+		            		$sqli1 = "SELECT * FROM m_log WHERE month='$actual'";
+			    			$query3 = mysqli_query($link, $sqli1) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+		            		while($row = mysqli_fetch_assoc($query3)) {
+		            			$value = $row['logins'];
+		            			$login = ++$value;
+		            			echo $login;
+		            			$sqli2 = "UPDATE m_log SET logins='$login' WHERE month='$actual'";
+			            		$link->query($sqli2) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+		            		}
+						  	header('Location:./index.php');
+						  }
+						  elseif($ul == 'Notvalidated'){
+						 	$username=stripslashes($_POST['username']);
+						 	$location='404';
+							if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+								$IP = $_SERVER['HTTP_CLIENT_IP'];
+							} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	        		     		$IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	        		    	} else {
+	        		        	$IP = $_SERVER['REMOTE_ADDR'];
+	        		    	}
+	        		    	include_once('../db_con/db_UDB.php');
+	        		    	$refdate = date('H:i:s');
+	        		    	$login = "INSERT INTO loggedin (ip,username,location,userlevel,time_stamp)
+			            	VALUES ('".$IP."','".$username."','".$location."','".$ul."','".$refdate."')";
+		            		$link->query($login) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+	
+						  	include_once('../db_con/db_UDB.php');
+		            		$actual = date("n");
+		            		$sqli1 = "SELECT * FROM m_log WHERE month='$actual'";
+			    			$query3 = mysqli_query($link, $sqli1) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+		            		while($row = mysqli_fetch_assoc($query3)) {
+		            			$value = $row['logins'];
+		            			$login = ++$value;
+		            			echo $login;
+		            			$sqli2 = "UPDATE m_log SET logins='$login' WHERE month='$actual'";
+			            		$link->query($sqli2) or trigger_error("Fout: " .mysqli_error($link), E_USER_ERROR);
+		            		}
+						  	header('Location:./index.php');
+						  }
+						  }elseif($ban == 1){
+						  	header('Location:/banned.php');
+						  }
+						 }else{
+						  echo "<div class='alert alert-danger dangeralert'>Wrong username or password.</div>";
+						 }
+						}
+					}
 				?>
 
 		</div>
